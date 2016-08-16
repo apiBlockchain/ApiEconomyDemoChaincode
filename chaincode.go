@@ -26,6 +26,7 @@ import (
 	"encoding/json"
 	"time"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
+	
 )
 
 // Test comment
@@ -265,7 +266,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 	// Create an array of contract ids to keep track of all contracts
 	var contractIds []string
 	contractIds = append(contractIds, DOUBLE_CONTRACT);
-	//contractIds = append(contractIds, FEEDBACK_CONTRACT);
+	contractIds = append(contractIds, FEEDBACK_CONTRACT);
 	
 	jsonAsBytes, _ = json.Marshal(contractIds)
 	err = stub.PutState("contractIds", jsonAsBytes)								
@@ -403,8 +404,7 @@ func (t *SimpleChaincode) getAllContracts(stub *shim.ChaincodeStub)([]byte, erro
 // ============================================================================================================================
 func doubleContract(tx Transaction, stub *shim.ChaincodeStub) float64 {
 
-
-	contractAsBytes, err := stub.GetState(DOUBLE_CONTRACT)
+  	contractAsBytes, err := stub.GetState(DOUBLE_CONTRACT)
 	if err != nil {
 		return -99
 	}
@@ -414,11 +414,11 @@ func doubleContract(tx Transaction, stub *shim.ChaincodeStub) float64 {
 	var pointsToTransfer float64
 	pointsToTransfer = tx.Amount
 	if (tx.Date.After(contract.StartDate) && tx.Date.Before(contract.EndDate)) {
-	     pointsToTransfer = pointsToTransfer * 0.5
+	     pointsToTransfer = pointsToTransfer * 2
 	}
  
  
-  return pointsToTransfer
+   return pointsToTransfer
   
   
 }
