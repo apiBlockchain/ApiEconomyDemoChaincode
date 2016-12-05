@@ -108,7 +108,7 @@ func main() {
 // ============================================================================================================================
 // Init - reset all the things
 // ============================================================================================================================
-func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 
 	var err error
 
@@ -281,7 +281,7 @@ func (t *SimpleChaincode) Init(stub *shim.ChaincodeStub, function string, args [
 // ============================================================================================================================
 // Run - Our entry point for Invocations - [LEGACY] obc-peer 4/25/2016
 // ============================================================================================================================
-func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Run(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("run is running " + function)
 	return t.Invoke(stub, function, args)
 }
@@ -289,7 +289,7 @@ func (t *SimpleChaincode) Run(stub *shim.ChaincodeStub, function string, args []
 // ============================================================================================================================
 // Invoke - Our entry point for Invocations
 // ============================================================================================================================
-func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("invoke is running " + function)
 
 	// Handle different functions
@@ -306,7 +306,7 @@ func (t *SimpleChaincode) Invoke(stub *shim.ChaincodeStub, function string, args
 // ============================================================================================================================
 // Query - Our entry point for Queries
 // ============================================================================================================================
-func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args []string) ([]byte, error) {
+func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	fmt.Println("query is running " + function)
 
 	
@@ -323,7 +323,7 @@ func (t *SimpleChaincode) Query(stub *shim.ChaincodeStub, function string, args 
 // ============================================================================================================================
 // Get Open Points member account from the blockchain
 // ============================================================================================================================
-func (t *SimpleChaincode) getUserAccount(stub *shim.ChaincodeStub, userId string)([]byte, error){
+func (t *SimpleChaincode) getUserAccount(stub shim.ChaincodeStubInterface, userId string)([]byte, error){
 	
 	fmt.Println("Start getUserAccount")
 	fmt.Println("Looking for user with ID " + userId);
@@ -341,7 +341,7 @@ func (t *SimpleChaincode) getUserAccount(stub *shim.ChaincodeStub, userId string
 // ============================================================================================================================
 // Get all transactions that involve a particular user
 // ============================================================================================================================
-func (t *SimpleChaincode) getTxs(stub *shim.ChaincodeStub, userId string)([]byte, error){
+func (t *SimpleChaincode) getTxs(stub shim.ChaincodeStubInterface, userId string)([]byte, error){
 	
 	var res AllTransactions
 
@@ -380,7 +380,7 @@ func (t *SimpleChaincode) getTxs(stub *shim.ChaincodeStub, userId string)([]byte
 // ============================================================================================================================
 // Get the smart contract metadata from the blockchain
 // ============================================================================================================================
-func (t *SimpleChaincode) getAllContracts(stub *shim.ChaincodeStub)([]byte, error)  {
+func (t *SimpleChaincode) getAllContracts(stub shim.ChaincodeStubInterface)([]byte, error)  {
 
 	contractIdsAsBytes, _ := stub.GetState("contractIds")
 	var contractIds []string
@@ -402,7 +402,7 @@ func (t *SimpleChaincode) getAllContracts(stub *shim.ChaincodeStub)([]byte, erro
 // ============================================================================================================================
 // Smart contract for giving user double points
 // ============================================================================================================================
-func doubleContract(tx Transaction, stub *shim.ChaincodeStub) float64 {
+func doubleContract(tx Transaction, stub shim.ChaincodeStubInterface) float64 {
 
   	contractAsBytes, err := stub.GetState(DOUBLE_CONTRACT)
 	if err != nil {
@@ -427,7 +427,7 @@ func doubleContract(tx Transaction, stub *shim.ChaincodeStub) float64 {
 // ============================================================================================================================
 // Smart contract for giving user points for completing feedback surveys
 // ============================================================================================================================
-func feedbackContract(tx Transaction, stub *shim.ChaincodeStub) float64 {
+func feedbackContract(tx Transaction, stub shim.ChaincodeStubInterface) float64 {
   
 
 	contractAsBytes, err := stub.GetState(FEEDBACK_CONTRACT)
@@ -456,7 +456,7 @@ func feedbackContract(tx Transaction, stub *shim.ChaincodeStub) float64 {
 // ============================================================================================================================
 // Transfer points between members of the Open Points Network
 // ============================================================================================================================
-func (t *SimpleChaincode) transferPoints(stub *shim.ChaincodeStub, args []string) ([]byte, error) {
+func (t *SimpleChaincode) transferPoints(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
 	fmt.Println("Running transferPoints")
 	currentDateStr := time.Now().Format(time.RFC822)
